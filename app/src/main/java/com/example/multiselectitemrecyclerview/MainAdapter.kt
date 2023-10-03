@@ -1,5 +1,6 @@
 package com.example.multiselectitemrecyclerview
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     var listItem = mutableListOf<Model>()
 
-
+    private var selectAllItems: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_recyclerview, parent, false)
@@ -24,6 +25,9 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bind(listItem[position])
+
+        listItem[position].isSelected = selectAllItems
+
         if (listItem[position].isSelected == true) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.color_E85A5A))
         } else {
@@ -38,6 +42,8 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
             }
         }
+
+
     }
 
     class MainViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -45,5 +51,11 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         fun bind(model: Model) {
             tv.text = model.name
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun selectAllItems(selectAll: Boolean){
+        selectAllItems = selectAll
+        notifyDataSetChanged()
     }
 }
